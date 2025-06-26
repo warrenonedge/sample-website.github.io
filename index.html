@@ -3,164 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Demo - 2 Wheel Safety Training</title>
+    <title>Homepage Demo with Video - 2 Wheel Safety Training</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        /* --- Slideshow Styles --- */
-        .slideshow-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden;
-        }
-        .slide {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0;
-            transition: opacity 1.5s ease-in-out; background-size: cover; background-position: center;
-        }
-        .slide.active { opacity: 1; }
-
         /* --- Entrance Animation Styles --- */
         .reveal-on-scroll {
-            opacity: 0; transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-        .is-visible { opacity: 1; transform: translateY(0); }
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
         
         /* --- Leaflet Map Height --- */
         #map { height: 450px; }
+
+        /* Custom Hero Height */
+        .hero-section {
+            height: 75vh;
+        }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-white text-gray-800">
 
     <header id="header" class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
-        <nav class="container mx-auto px-6 py-5 flex justify-between items-center">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#">
-                <img src="https://2wheelsafety.com/wp-content/uploads/2wheelsafety-color-trams-800x250-1-768x240.png" alt="2 Wheel Safety Logo" class="h-14 w-auto">
+                <img src="https://2wheelsafety.com/wp-content/uploads/2wheelsafety-color-trams-800x250-1-768x240.png" alt="2 Wheel Safety Logo" class="h-12 md:h-14 w-auto">
             </a>
             
-            <ul class="hidden md:flex items-center space-x-8">
+            <ul class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+                <li><a href="#hero" class="text-gray-700 hover:text-orange-500 transition-colors">Home</a></li>
+                <li><a href="#courses" class="text-gray-700 hover:text-orange-500 transition-colors">MTC</a></li>
+                <li><a href="#courses" class="text-gray-700 hover:text-orange-500 transition-colors">1DPC</a></li>
+                <li><a href="#courses" class="text-gray-700 hover:text-orange-500 transition-colors">Riding Clinics</a></li>
                 <li><a href="#locations" class="text-gray-700 hover:text-orange-500 transition-colors">Locations</a></li>
-                <li><a href="#featured" class="text-gray-700 hover:text-orange-500 transition-colors">Courses</a></li>
-                <li><a href="#info" class="text-gray-700 hover:text-orange-500 transition-colors">Info/FAQ</a></li>
-                <li><a href="#compare" class="text-gray-700 hover:text-orange-500 transition-colors">Compare</a></li>
-                <li><a href="#footer" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition-all">Contact</a></li>
+                <li><a href="#footer" class="text-gray-700 hover:text-orange-500 transition-colors">Contact</a></li>
+                <li><a href="#" class="bg-orange-500 text-white font-bold py-3 px-5 rounded-md hover:bg-orange-600 transition-all shadow-lg">BOOK NOW</a></li>
             </ul>
 
-            <button id="mobile-menu-button" class="md:hidden">
+            <button id="mobile-menu-button" class="lg:hidden">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </nav>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white/95">
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95">
             <ul class="flex flex-col items-center space-y-4 py-4">
-                <li><a href="#locations" class="text-gray-700 hover:text-orange-500 transition-colors">Locations</a></li>
-                <li><a href="#featured" class="text-gray-700 hover:text-orange-500 transition-colors">Courses</a></li>
-                <li><a href="#info" class="text-gray-700 hover:text-orange-500 transition-colors">Info/FAQ</a></li>
-                <li><a href="#compare" class="text-gray-700 hover:text-orange-500 transition-colors">Compare</a></li>
-                <li><a href="#footer" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition-all">Contact</a></li>
+                <li><a href="#hero" class="text-gray-700">Home</a></li>
+                <li><a href="#courses" class="text-gray-700">MTC</a></li>
+                <li><a href="#courses" class="text-gray-700">1DPC</a></li>
+                <li><a href="#courses" class="text-gray-700">Riding Clinics</a></li>
+                <li><a href="#locations" class="text-gray-700">Locations</a></li>
+                <li><a href="#footer" class="text-gray-700">Contact</a></li>
+                <li><a href="#" class="bg-orange-500 text-white font-bold py-3 px-5 rounded-md w-4/5 text-center">BOOK NOW</a></li>
             </ul>
         </div>
     </header>
 
-    <div class="slideshow-container">
-        <div class="slide active" style="background-image: url('https://i.imgur.com/nlHNnpy.jpeg');"></div>
-        <div class="slide" style="background-image: url('https://i.imgur.com/wdmFsSJ.jpeg');"></div>
-        <div class="slide" style="background-image: url('https://i.imgur.com/w5XUyx7.jpeg');"></div>
-    </div>
-
-    <main class="relative z-10">
-        <div class="container mx-auto my-8 p-6 md:p-10 bg-white/90 backdrop-blur-sm rounded-xl shadow-2xl">
+    <main>
+        <section id="hero" class="hero-section relative flex items-center text-white overflow-hidden">
+            <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
+                <source src="https://2wheelsafety.com/wp-content/uploads/mc-rider-sunset.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
             
-            <section id="locations" class="mb-12 reveal-on-scroll">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Find Our Training Locations</h2>
-                <div id="map" class="w-full rounded-lg shadow-md"></div>
-            </section>
-    
-            <section id="featured" class="text-center p-8 bg-gray-50/80 rounded-lg reveal-on-scroll">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Featured Course</h2>
-                <div class="course-card max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                    <h3 class="text-2xl font-bold text-orange-600">Total Control Motorcyclist Training Course (MTC)</h3>
-                    <p class="mt-4 text-gray-700">Our most popular course, the MTC is the perfect way to learn the basics of motorcycle safety and get your motorcycle license.</p>
-                    <div class="mt-6 text-xl">
-                        <span class="font-bold text-gray-800">Price:</span> <span class="text-gray-600">$350</span> | 
-                        <span class="font-bold text-gray-800">Duration:</span> <span class="text-gray-600">2 days</span>
-                    </div>
-                    <a href="#" class="inline-block mt-8 bg-orange-500 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-orange-600 transition-all duration-300 transform hover:translate-y-[-2px]">
-                        Learn More & Book Now
-                    </a>
+            <div class="absolute top-0 left-0 w-full h-full bg-black/50 z-10"></div>
+            
+            <div class="container mx-auto px-6 text-center relative z-20">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">MOTORCYCLE TRAINING & LICENSING PREPARATION</h1>
+                <p class="mt-4 text-lg md:text-xl font-light max-w-3xl mx-auto">Serving the San Francisco East Bay & South Bay Areas</p>
+                <div class="mt-8 flex flex-wrap justify-center gap-4 md:gap-8 text-sm md:text-base">
+                    <span class="bg-white/20 backdrop-blur-sm p-2 rounded-md">✔ CA DMV CERTIFIED</span>
+                    <span class="bg-white/20 backdrop-blur-sm p-2 rounded-md">✔ MOTORCYCLES PROVIDED</span>
+                    <span class="bg-white/20 backdrop-blur-sm p-2 rounded-md">✔ NO PERMIT REQUIRED</span>
                 </div>
-            </section>
-    
-            <section id="info" class="max-w-4xl mx-auto mb-12 reveal-on-scroll">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">General Information</h2>
-                <div class="space-y-4">
-                    <div class="accordion-item bg-white/95 border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-                        <button class="accordion-header w-full p-5 text-left font-semibold text-gray-700 flex justify-between items-center hover:bg-gray-50/50 transition-colors duration-200">
-                            <span>Student Info</span><span class="accordion-icon text-orange-500 text-2xl font-light transform transition-transform duration-300">-</span>
-                        </button>
-                        <div class="accordion-content max-h-[1000px] overflow-hidden transition-max-height duration-500 ease-in-out">
-                            <div class="p-5 pt-0 text-gray-600"><p>Here you would list all the necessary information for students, such as what to bring, what to wear, and prerequisites for the courses. For example: "All students must possess a valid driver's license or learner's permit."</p></div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-2">WHY CHOOSE 2WS?</h2>
+                <p class="text-gray-600 mb-12">We are dedicated to providing the best training experience.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div class="reveal-on-scroll">
+                        <div class="text-orange-500 mb-4">
+                            <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">DMV-Certified Training</h3>
+                        <p class="text-gray-600">Our courses are certified by the California DMV, ensuring you get the highest quality instruction.</p>
+                    </div>
+                    <div class="reveal-on-scroll">
+                        <div class="text-orange-500 mb-4">
+                            <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Flexible Scheduling</h3>
+                        <p class="text-gray-600">We offer a variety of weekday and weekend classes to fit your busy schedule.</p>
+                    </div>
+                    <div class="reveal-on-scroll">
+                        <div class="text-orange-500 mb-4">
+                            <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Passionate Instructors</h3>
+                        <p class="text-gray-600">Learn from experienced, patient, and enthusiastic instructors who love to ride.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="courses" class="py-16">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-12">OUR PREMIER COURSES</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300 reveal-on-scroll">
+                        <img src="https://i.imgur.com/nlHNnpy.jpeg" alt="Motorcyclist Training Course" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Motorcyclist Training Course (MTC)</h3>
+                            <p class="text-gray-600 mb-4">The MTC is designed for the novice rider. We provide the motorcycle and helmet!</p>
+                            <a href="#" class="text-orange-500 font-semibold hover:underline">Learn More →</a>
                         </div>
                     </div>
+                    <div class="bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300 reveal-on-scroll">
+                        <img src="https://i.imgur.com/wdmFsSJ.jpeg" alt="1-Day Premier Course" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">1-Day Premier Course (1DPC)</h3>
+                            <p class="text-gray-600 mb-4">For experienced riders returning to the sport, or those with dirt bike experience.</p>
+                            <a href="#" class="text-orange-500 font-semibold hover:underline">Learn More →</a>
+                        </div>
                     </div>
-            </section>
-    
-            <section id="compare" class="mb-12 reveal-on-scroll">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Compare Our Courses</h2>
-                <div class="overflow-x-auto bg-white/95 rounded-lg shadow-md">
-                    <table class="w-full text-sm text-left text-gray-600">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-100/80">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">Feature</th><th scope="col" class="px-6 py-3 text-center">MTC</th><th scope="col" class="px-6 py-3 text-center">1-Day Premiere Course</th><th scope="col" class="px-6 py-3 text-center">Intermediate Clinic</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b"><td class="px-6 py-4 font-semibold">Price</td><td class="px-6 py-4 text-center">$350</td><td class="px-6 py-4 text-center">$300</td><td class="px-6 py-4 text-center">$250</td></tr>
-                            <tr class="border-b bg-gray-50/50"><td class="px-6 py-4 font-semibold">Duration</td><td class="px-6 py-4 text-center">2 Days</td><td class="px-6 py-4 text-center">1 Day</td><td class="px-6 py-4 text-center">1 Day</td></tr>
-                            <tr class="border-b"><td class="px-6 py-4 font-semibold">DMV License Waiver</td><td class="px-6 py-4 text-center text-green-600 font-bold">✔</td><td class="px-6 py-4 text-center text-green-600 font-bold">✔</td><td class="px-6 py-4 text-center text-red-500 font-bold">✗</td></tr>
-                        </tbody>
-                    </table>
+                    <div class="bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300 reveal-on-scroll">
+                        <img src="https://i.imgur.com/w5XUyx7.jpeg" alt="Riding Clinics" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Intermediate/Advanced Clinics</h3>
+                            <p class="text-gray-600 mb-4">Take your skills to the next level with our clinics focusing on advanced techniques.</p>
+                            <a href="#" class="text-orange-500 font-semibold hover:underline">Learn More →</a>
+                        </div>
+                    </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+                <div class="reveal-on-scroll">
+                    <img src="https://2wheelsafety.com/wp-content/uploads/cmsp-logo-with_text.png" alt="Get your license" class="rounded-lg shadow-lg">
+                </div>
+                <div class="reveal-on-scroll">
+                    <h2 class="text-3xl font-bold mb-4">GET YOUR M1 LICENSE FAST!</h2>
+                    <p class="text-gray-600 mb-6">Our DMV waiver makes the process simple. Upon successful completion of the MTC or 1DPC, you can skip the riding test at the DMV.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start"><span class="bg-orange-500 text-white rounded-full w-8 h-8 text-center leading-8 font-bold mr-4 flex-shrink-0">1</span><span>Pass the written exam at the DMV.</span></li>
+                        <li class="flex items-start"><span class="bg-orange-500 text-white rounded-full w-8 h-8 text-center leading-8 font-bold mr-4 flex-shrink-0">2</span><span>Successfully complete our MTC or 1DPC course.</span></li>
+                        <li class="flex items-start"><span class="bg-orange-500 text-white rounded-full w-8 h-8 text-center leading-8 font-bold mr-4 flex-shrink-0">3</span><span>Return to the DMV with our completion certificate to get your license!</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="locations" class="py-16">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-4">CONVENIENT BAY AREA LOCATIONS</h2>
+                <p class="text-gray-600 mb-12 max-w-2xl mx-auto">We have training centers in Newark, Gilroy, and Fremont to serve riders all over the Bay Area.</p>
+                <div id="map" class="w-full rounded-lg shadow-lg reveal-on-scroll"></div>
+            </div>
+        </section>
+        
     </main>
 
-    <footer id="footer" class="bg-gray-800 text-gray-300 pt-12 pb-6 relative z-10">
-        <div class="container mx-auto px-6 grid gap-8 grid-cols-1 md:grid-cols-4">
-            <div class="md:col-span-1">
-                <h3 class="text-xl font-bold text-white mb-4">2 Wheel Safety</h3>
-                <p class="text-gray-400">Providing premier motorcycle safety training and license preparation for the Bay Area since 2005.</p>
+    <footer id="footer" class="bg-gray-800 text-gray-300 pt-16 pb-8">
+        <div class="container mx-auto px-6 grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 text-center md:text-left">
+            <div class="lg:col-span-1">
+                <img src="https://2wheelsafety.com/wp-content/uploads/2wheelsafety-Wht-trans-500.png" alt="2 Wheel Safety Logo White" class="h-12 w-auto mx-auto md:mx-0 mb-4">
+                <p class="text-gray-400 text-sm">Premier motorcycle safety training and license preparation for the San Francisco Bay Area.</p>
             </div>
-            
             <div>
                 <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
-                <ul class="space-y-2">
-                    <li><a href="#header" class="hover:text-orange-400 transition-colors">Home</a></li>
-                    <li><a href="#featured" class="hover:text-orange-400 transition-colors">Courses</a></li>
-                    <li><a href="#locations" class="hover:text-orange-400 transition-colors">Locations</a></li>
-                    <li><a href="#info" class="hover:text-orange-400 transition-colors">Info/FAQ</a></li>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#courses" class="hover:text-orange-400 transition-colors">Motorcyclist Training Course (MTC)</a></li>
+                    <li><a href="#courses" class="hover:text-orange-400 transition-colors">1-Day Premier Course (1DPC)</a></li>
+                    <li><a href="#courses" class="hover:text-orange-400 transition-colors">Riding Clinics</a></li>
+                    <li><a href="#locations" class="hover:text-orange-400 transition-colors">View All Locations</a></li>
                 </ul>
             </div>
-
             <div>
-                <h3 class="text-lg font-semibold text-white mb-4">Our Locations</h3>
-                <ul class="space-y-2 text-gray-400">
-                    <li>Newark</li>
-                    <li>Gilroy</li>
-                    <li>Fremont</li>
+                <h3 class="text-lg font-semibold text-white mb-4">Student Info</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-orange-400 transition-colors">Policies</a></li>
+                    <li><a href="#" class="hover:text-orange-400 transition-colors">FAQs</a></li>
+                    <li><a href="#" class="hover:text-orange-400 transition-colors">Contact Us</a></li>
                 </ul>
             </div>
-
             <div>
                 <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
-                <ul class="space-y-2 text-gray-400">
-                    <li><a href="tel:1-800-123-4567" class="hover:text-orange-400">1-800-123-4567</a></li>
-                    <li><a href="mailto:info@2wheelsafety.com" class="hover:text-orange-400">info@2wheelsafety.com</a></li>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>Phone: <a href="tel:1-800-555-2WS" class="hover:text-orange-400">1-800-555-2WS</a></li>
+                    <li>Email: <a href="mailto:info@2wheelsafety.com" class="hover:text-orange-400">info@2wheelsafety.com</a></li>
+                    <li class="pt-2">South Bay & East Bay, CA</li>
                 </ul>
             </div>
         </div>
-        <div class="mt-10 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">
+        <div class="mt-12 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">
             <p>© <span id="current-year"></span> 2 Wheel Safety Training. All Rights Reserved.</p>
         </div>
     </footer>
@@ -182,24 +229,13 @@
         // --- JavaScript for Entrance Animation ---
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('is-visible'); }
+                if (entry.isIntersecting) { 
+                    entry.target.classList.add('is-visible');
+                    scrollObserver.unobserve(entry.target);
+                }
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal-on-scroll').forEach(el => { scrollObserver.observe(el); });
-
-        // --- JavaScript for Accordion ---
-        document.querySelectorAll('.accordion-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const icon = header.querySelector('.accordion-icon');
-                const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
-                if (isOpen) {
-                    content.style.maxHeight = '0px'; icon.textContent = '+';
-                } else {
-                    content.style.maxHeight = content.scrollHeight + 'px'; icon.textContent = '-';
-                }
-            });
-        });
 
         // --- JavaScript for Interactive Map ---
         const map = L.map('map').setView([37.3, -121.8], 9);
@@ -214,25 +250,6 @@
         locations.forEach(location => {
             L.marker(location.coords).addTo(map).bindPopup(`<b>${location.name}</b><br>${location.address}<br><a href="https://maps.google.com/?q=${encodeURIComponent(location.address)}" target="_blank" class="text-orange-600 font-semibold">Get Directions</a>`);
         });
-
-        // --- JavaScript for Background Slideshow ---
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active');
-                if (i === index) { slide.classList.add('active'); }
-            });
-        }
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            showSlide(currentSlide);
-        }
-        if (totalSlides > 0) {
-            showSlide(0);
-            setInterval(nextSlide, 5000);
-        }
     </script>
 </body>
 </html>
